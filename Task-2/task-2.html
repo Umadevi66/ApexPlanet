@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact & To-Do App</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f4f8;
+    }
+
+    header {
+      background-color:#0077cc;
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    section {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #0077cc;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+
+    .form-error {
+      color: red;
+      font-size: 0.9rem;
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    li {
+      padding: 0.5rem 0.75rem;
+      background: #eaf3fc;
+      margin-bottom: 0.5rem;
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    li button {
+      width: auto;
+      padding: 0.4rem 0.7rem;
+      background-color: #ff4d4d;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Contact Us & To-Do List</h1>
+  </header>
+
+  <main>
+    <!-- Contact Form -->
+    <section>
+      <h2>Contact Form</h2>
+      <form id="contactForm">
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Your Name" required />
+
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Your Email" required />
+
+        <label for="message">Message</label>
+        <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
+
+        <button type="submit">Send Message</button>
+        <p class="form-error" id="formError"></p>
+      </form>
+    </section>
+
+    <!-- To-Do List -->
+    <section>
+      <h2>To-Do List</h2>
+      <input type="text" id="taskInput" placeholder="Enter a task" />
+      <button id="addTaskBtn">Add Task</button>
+      <ul id="taskList"></ul>
+    </section>
+  </main>
+
+  <script>
+    // FORM VALIDATION
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+      const errorDisplay = document.getElementById('formError');
+      const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+
+      if (!name || !email || !message) {
+        errorDisplay.textContent = 'Please fill in all fields.';
+        return;
+      }
+
+      if (!emailRegex.test(email)) {
+        errorDisplay.textContent = 'Please enter a valid email address.';
+        return;
+      }
+
+      errorDisplay.style.color = 'green';
+      errorDisplay.textContent = 'Message sent successfully!';
+      this.reset();
+    });
+
+    // TO-DO LIST LOGIC
+    document.getElementById('addTaskBtn').addEventListener('click', function() {
+      const taskInput = document.getElementById('taskInput');
+      const taskValue = taskInput.value.trim();
+      const taskList = document.getElementById('taskList');
+
+      if (taskValue === '') return;
+
+      const li = document.createElement('li');
+      li.textContent = taskValue;
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = 'Delete';
+      deleteBtn.onclick = () => li.remove();
+
+      li.appendChild(deleteBtn);
+      taskList.appendChild(li);
+      taskInput.value = '';
+    });
+  </script>
+
+</body>
+</html>
